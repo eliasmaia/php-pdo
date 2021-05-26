@@ -18,3 +18,5 @@ foreach ($studentDataList as $studentData) {
         new DateTimeImmutable($studentData['birth_date'])
     );
 }
+
+var_dump($studentList);
