@@ -9,20 +9,25 @@ require_once 'vendor/autoload.php';
 $connection = ConnectionCreator::createConnection();
 $studentRepository = new PdoStudentRepository($connection);
 
-//realizar processo de definição de turma
 $connection->beginTransaction();
-$aStudent = new Student(
-    null,
-    'Nico Steppat',
-    new DateTimeImmutable('1985-05-01')
-);
-$studentRepository->save($aStudent);
 
-$anotherStudent = new Student(
-    null,
-    'Nico Rosberg',
-    new DateTimeImmutable('1985-05-01')
-);
-$studentRepository()->save($anotherStudent);
+try {
+    $aStudent = new Student(
+        null,
+        'Nico Steppat',
+        new DateTimeImmutable('1985-05-01')
+    );
+    $studentRepository->save($aStudent);
 
-$connection->commit();
+    $anotherStudent = new Student(
+        null,
+        'Nico Rosberg',
+        new DateTimeImmutable('1985-05-01')
+    );
+    $studentRepository()->save($anotherStudent);
+
+    $connection->commit();
+} catch (\PDOException $e){
+    echo $e->getMessage();
+    $connection->rollBack();
+}
